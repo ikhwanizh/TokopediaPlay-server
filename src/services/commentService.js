@@ -1,41 +1,19 @@
-const CommentModel = require('../models/commentModel');
+const CommentRepository = require("../repositories/CommentRepository");
 
 class CommentService {
-    static async getAllComments() {
-        try {
-            const allComments = await CommentModel.find();
-            return allComments;
-        }
-        catch (err) {
-            console.log(err);
-        }
-    }
-    static async getCommentsByVideoId(videoId) {
-        try {
-            const comments = await CommentModel.find({videoId});
-            return comments;
-        }
-        catch (err) {
-            console.log(err);
-        }
-    }
-    static async addComment(username, comment,videoId) {
-        const timestamp = generateTimestamp();
-        console.log(timestamp);
-        try {
-            const newComment = await CommentModel.create({username, comment, timestamp, videoId});
-            console.log('Comment saved successfully!');
-            return newComment;
-        }
-        catch (err) {
-            console.log(err);
-        }
-    }
-}
-function generateTimestamp() {
-    const date = new Date();
-    const timestamp = date.toLocaleDateString() + ' ' + date.toLocaleTimeString();
-    return timestamp;
+  constructor() {}
+
+  static async createComment(username, comment, videoId) {
+    return await CommentRepository.createComment(username, comment, videoId);
+  }
+
+  static async getComment(videoId) {
+    return await CommentRepository.getComment(videoId);
+  }
+
+  static async getAllComments() {
+    return await CommentRepository.getAllComments();
+  }
 }
 
 module.exports = CommentService;
